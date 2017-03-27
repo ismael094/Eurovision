@@ -1,0 +1,2 @@
+<?php
+    $navi->printNav();

@@ -1,0 +1,109 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 29-mar-2016, 10:54:18
+    Author     : a607477
+*/
+body {
+    background: #000 url(../img/bg_stockholm.jpg) no-repeat top center fixed;
+    background-size: 100% auto;
+    height: 100vh;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+#fixedImg{
+    background: no-repeat;
+    width: 100%; 
+    height: 100%;  
+    background-size: cover; 
+    background-attachment: fixed; 
+    overflow-x: hidden;
+  
+    
+    
+}
+.paises, .addSongs {
+    text-align: center;
+    height: 50px;
+    margin-bottom: 2px;
+    font-size: 17px;
+    cursor: pointer;
+}
+.topPuestos {
+    text-align: center;
+    height: 50px;
+    margin-bottom: 2px;
+    font-size: 17px;
+    cursor: pointer;
+}
+.paisCon {
+    height: 750px;
+    overflow-y: scroll;
+}
+@media (max-width: 992px) {
+    .paisCon {
+    height: 150px;
+    overflow-y: auto;
+}
+}
+#dataSong, #dataSongssss {
+    height: 750px;
+}
+@media (max-width: 992px) {
+    #dataSong {
+        height: 820px;
+}
+}
+.puntajes > th {
+    background: transparent;
+}
+.navbar-brand {
+    padding: 0px 0px; 
+}
+
+#nav {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+54,7db9e8+100 */
+background: rgb(30,87,153); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(41,137,216,1) 54%, rgba(125,185,232,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 54%,rgba(125,185,232,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 54%,rgba(125,185,232,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+
+}
+.imgs {
+    width: 200px;
+    height: 80px;
+}
+
+.showCan {
+    height: 750px;
+    overflow-y: scroll;
+}
+#comment {
+    min-height: 100px;
+    width: 100%;
+}
+#dyTable {
+    overflow-x: auto;
+}
+
+.coincidencia {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e4f5fc+0,bfe8f9+19,9fd8ef+51,2ab0ed+100 */
+    background: rgb(228,245,252); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(228,245,252,1) 0%, rgba(191,232,249,1) 19%, rgba(159,216,239,1) 51%, rgba(42,176,237,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(228,245,252,1) 0%,rgba(191,232,249,1) 19%,rgba(159,216,239,1) 51%,rgba(42,176,237,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(228,245,252,1) 0%,rgba(191,232,249,1) 19%,rgba(159,216,239,1) 51%,rgba(42,176,237,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4f5fc', endColorstr='#2ab0ed',GradientType=0 ); /* IE6-9 */
+
+}
+.acierto {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+54,7db9e8+100 */
+        background: rgb(30,87,153); /* Old browsers */
+        background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(41,137,216,1) 54%, rgba(125,185,232,1) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 54%,rgba(125,185,232,1) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(41,137,216,1) 54%,rgba(125,185,232,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+}
