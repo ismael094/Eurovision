@@ -208,8 +208,12 @@ class Top extends CI_Model {
         $body->createDivWithContent("col-md-6 well","","Puntuación");
         $body->endDiv();
         foreach ($resultados as $key=>$value) {
-            $body->createDivClass("","topUsuF","data-usu='".$key."'");
-            $body->createDivWithContent("col-md-6 well","",$key);
+            $body->createDivClass("perfilDiv","topUsuF","data-usu='".$key."'");
+            $body->createDivClass("col-md-6 well text-justify container", "");
+            $body->printImage("resources/themes/default/img/logo.png","perfilImagen col-md-3 col-md-offset-1 center-block img-circle ");
+            $body->createElement("p style='margin-top:20px;' class='lead col-md-3 col-md-offset-1 text-center'");
+            $body->printText($key);
+            $body->endElement("p");
             $body->endDiv();
             $body->createDivWithContent("col-md-6 well","",$value);
             $body->endDiv();

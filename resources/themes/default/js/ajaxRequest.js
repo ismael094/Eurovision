@@ -226,6 +226,7 @@ $('body').on('click', '.submitAddSong',function() {
         url: base_url+"index.php/Anadir/addSongByAdmin",
         data: {'idPais': idPais,'name': name,'author' : author,'enlace' : enlace, 'agno' : agno, 'finalista' : finalista},
         success: function(data){
+            console.log(data);
             $('#addSongEnlace').val("");
             $('#addSongName').val("");
             $('#addSongAuthor').val("");

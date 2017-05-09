@@ -195,9 +195,9 @@ class Body extends CI_Model{
         $this->endElement("tr");
     }
     
-    public function printImage($url) {
+    public function printImage($url,$class="") {
         ?>
-            <img src="<?php echo $url;?>" class="img-responsive"/>
+            <img src="<?php echo $url;?>" class="img-responsive <?php echo $class;?>"/>
         <?php
     }
     

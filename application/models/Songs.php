@@ -12,6 +12,7 @@
  * @author alumno
  */
 class Songs extends CI_Model {
+    private $username;
     private $idPais;
     private $year;
     private $name;
@@ -22,6 +23,7 @@ class Songs extends CI_Model {
     private $body = Body;
     
     public function Songs() { 
+        $this->username = $this->session->userdata('username');
     }
     
     public function setSong($idPais,$year,$name,$author,$video,$finalista) {
@@ -44,23 +46,28 @@ class Songs extends CI_Model {
 
 
     public function saveSong() {
-        if (!$this->checkIfExist()) {
+        $a = $this->checkIfExist();
+        if ($a == false) {
             $query = $this->db->query('INSERT INTO canciones(nombre,interprete,enlace,idPais,estado,agno) VALUES ("'.$this->name.'", "'.$this->author.'", "'.$this->video.'", '.$this->idPais.', "'.$this->finalista.'", "'.$this->year.'")'); 
-            //$query = $this->db->query('UPDATE canciones SET nombre = "'.$this->name.'", interprete = "'.$this->author.'",enlace = "'.$this->video.'" where nombreUsuario = "'.$this->username.'" and idCancion = '.$idSong.''); 
+            
+        } else {
+            $query = $this->db->query('UPDATE canciones SET nombre = "'.$this->name.'", interprete = "'.$this->author.'",enlace = "'.$this->video.'" where idCancion = '.$a.''); 
         }
         
         
     }
     
     private function checkIfExist() {
-        $que = $this->db->query('SELECT * FROM canciones WHERE nombre="'.$this->name.'" AND interprete="'.$this->author.'" AND agno = "'.$this->year.'" AND idPais="'.$this->idPais.'"');
+        $que = $this->db->query('SELECT * FROM canciones WHERE agno = "'.$this->year.'" AND idPais="'.$this->idPais.'"');
         if ($que->num_rows() > 0) {
-            return true;
+            $result = $que->result();
+            var_dump($result);
+            return $result[0]->idCancion;
         }
-        else {  
+        else {
             return false;
             
-        };
+        }
     }
     
     private function getEmbedVideo($video) {

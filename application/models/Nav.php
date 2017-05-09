@@ -149,27 +149,25 @@ class Nav extends CI_Model{
                             <li><a href="?top=true&year=2017">Top10</a></li>
                         <?php
                     }
-                ?>
-                <li role="presentation" class="dropdown">
+                
+                /*<li role="presentation" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                       2016 <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="?c=2016">Candidatos</a></li>
                     </ul>
-                </li>
+                </li>*/?>
             </ul>
         <?php
     }
     
     private function printYearsList() {
-        $j = new Songs();
-        $query = $j->getYears();
-        foreach ($query as $rows) {
+        
             ?>
-                <li><a href="?y=<?php echo $rows->agno;?>&puntuar=true"><?php echo $rows->agno;?></a></li>
+                <li><a href="?y=2017&puntuar=true">2017</a></li>
             <?php
 
-        }
+        
     }
 }
