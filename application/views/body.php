@@ -15,6 +15,7 @@
         $body->printModal("1");
         $body->createInput("hidden","",$_GET['year'],"year");
         $body->endDiv();
+        //sss
     } elseif ($_GET['add'] != null && $this->session->userdata('level') == "Administrador") {
         $body->createDiv(2,1,"paisCon",false);
         $paises->getPaises();
