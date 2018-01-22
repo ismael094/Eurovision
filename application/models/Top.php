@@ -21,10 +21,14 @@ class Top extends CI_Model {
     private $error;
     private $date;
     private $query;
+    private $prueba;
     
     
-    public function Top() {
-        $this->date = date('Y-m-d h:i:s');
+    public function Top($ano) {
+        parent::__construct();
+        $this->agno = $ano;
+        $this->date = date('Y-m-d H:i:s');
+        $this->prueba = array();
     }
     
     private function updateQuery() {
@@ -51,12 +55,12 @@ class Top extends CI_Model {
     }
     
     private function getUsers() {
-        $query = $this->db->query('SELECT DISTINCT nombreUsuario FROM `top_usuarios`');
+        $query = $this->db->query('SELECT DISTINCT nombreUsuario FROM `top_usuarios` where agno = "'.$this->agno.'"');
         return $query;
     }
     
     private function selectTopOfUser($user) {
-        $query = $this->db->query('SELECT * FROM `top_usuarios` where nombreUsuario = "'.$user.'" order by puesto');
+        $query = $this->db->query('SELECT * FROM `top_usuarios` where nombreUsuario = "'.$user.'" and agno = "'.$this->agno.'"  order by puesto');
         return $query;
     }
     
@@ -174,14 +178,17 @@ class Top extends CI_Model {
     
     private function countTopRight($user) {
         $puestos = $this->getSongIdsTopResult();
-        $topFinal = array();
-        $topFinal[$user] = 0;
+        
+        //$topFinal = array();
+        //$topFinal[$user] = 0;
+        $this->prueba[$user] = 0;
         $query2 = $this->selectTopOfUser($user);
         if ($query2->num_rows() > 0) {
             $results2 = $query2->result();
             foreach ($results2 as $rows2) {
                 if ($puestos[$rows2->puesto] ==  $rows2->idCancion) {
-                    $topFinal[$user]++;
+                    //$topFinal[$user]++;
+                    $this->prueba[$user]++;
                 }
             }
         }
@@ -193,27 +200,25 @@ class Top extends CI_Model {
         if ($query->num_rows() > 0) {
             $results1 = $query->result();
             $topFinal = array();
-                foreach ($results1 as $rows1) {
-                    $topFinal = $this->countTopRight($rows1->nombreUsuario);
-                }
+            $i=0;
+            foreach ($results1 as $rows1) {
+                $this->countTopRight($rows1->nombreUsuario);
+            }
         }
         return $topFinal;
     }
     
     public function showTopOfUsers() {
-        $resultados =  $this->getTopUsu();
+        $this->getTopUsu();
         $body = new Body();
         $body->createDivWithContent("col-md-6 well","","Usuario");
         $body->endDiv();
         $body->createDivWithContent("col-md-6 well","","Puntuación");
         $body->endDiv();
-        foreach ($resultados as $key=>$value) {
-            $body->createDivClass("perfilDiv","topUsuF","data-usu='".$key."'");
+        foreach ($this->prueba as $key=>$value) {
+            $body->createDivClass("perfilDiv","topUsuF","data-usu='".$key."' data-year='".$this->agno."'");
             $body->createDivClass("col-md-6 well text-justify container", "");
-            $body->printImage("resources/themes/default/img/logo.png","perfilImagen col-md-3 col-md-offset-1 center-block img-circle ");
-            $body->createElement("p style='margin-top:20px;' class='lead col-md-3 col-md-offset-1 text-center'");
             $body->printText($key);
-            $body->endElement("p");
             $body->endDiv();
             $body->createDivWithContent("col-md-6 well","",$value);
             $body->endDiv();

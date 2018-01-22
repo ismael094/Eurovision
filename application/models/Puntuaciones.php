@@ -44,6 +44,10 @@ class Puntuaciones extends CI_Model {
         $query = $this->db->query('SELECT * FROM puntuaciones WHERE nombreUsuario="'.$this->username.'" AND idCancion="'.$this->idSong.'"');
         return $query;
     }
+    private function getComm() {
+        $query = $this->db->query('SELECT * FROM puntuaciones WHERE idCancion="'.$this->idSong.'" and comentario != ""');
+        return $query;
+    }
     
     private function selectCall($number,$id="") {
         if ($number == 0) {
@@ -55,7 +59,7 @@ class Puntuaciones extends CI_Model {
         } elseif ($number == 3) {
             $s = "CALL getSongGlo('".$this->year."')";
         } elseif ($number == 4) {
-            $s = "CALL getSongIdJDI('".$this->year."')";
+            $s = "CALL getSongIdJDI(".$this->year.")";
         }
         $query = $this->db->query($s);
         return $query;
@@ -168,7 +172,7 @@ class Puntuaciones extends CI_Model {
         }
     }
     
-    public function printPuntuacionesBy($mode,$site) {
+    public function printPuntuacionesBy($mode,$site="") {
         $this->username = $this->session->userdata('username');
         $this->setUsers();
         if ($mode == 'JDI') {
@@ -196,6 +200,7 @@ class Puntuaciones extends CI_Model {
                     $media = (($results2[0]->puntVozJ + $results2[0]->puntCanJ + 
                         $results2[0]->puntVozI + $results2[0]->puntCanI + 
                         $results2[0]->puntVozD + $results2[0]->puntCanD)/6);
+                    $media = number_format((float)$media,2,'.','');
                     $this->setArray($results2[0],$media);
                     $query2->next_result();
                     $dynaTable->createElement("tr",'class="dyCo" '
@@ -214,7 +219,24 @@ class Puntuaciones extends CI_Model {
             echo 'No has puntuado ninguna canción';
         }
     }
-    
+    public function getComments($id) {
+        $this->idSong = $id;
+        $query = $this->getComm();
+        if ($query->num_rows() > 0) {
+            $results = $query->result();
+            echo '<div>';
+            foreach ($results as $rows) {
+                ?>
+                
+                    <div class="col-md-2 col-sm-2 well" style="text-align:left"><?php echo $rows->nombreUsuario;?></div>
+                    <div class="col-md-10 col-sm-10 well" style="text-align:left;max-height: 100px;overflow-y:auto"><?php echo ltrim($rows->comentario);?></div>
+                
+                <?php
+            }
+            echo '</div>';
+        }
+        
+    }
     private function puntModeIndGlo($mode,$site) {
         $this->username = $this->session->userdata('username');
         $dynaTable = new DynaTable();
@@ -230,13 +252,16 @@ class Puntuaciones extends CI_Model {
             $this->buildHeadTable(false,true);
         }
 
-        $query->next_result();
         if ($query->num_rows() > 0) {
-            
+            $query->next_result();
             $results = $query->result();
             $query->next_result();
             foreach ($results as $rows) {
-                $media = (($rows->puntCan + $rows->puntVoz)/2);
+                $rows->puntCan = number_format((float)$rows->puntCan,2,'.','');
+                $rows->puntVoz = number_format((float)$rows->puntVoz,2,'.','');
+                $media = ((number_format((float)$rows->puntCan,2,'.','') + number_format((float)$rows->puntVoz,2,'.',''))/2);
+                $media = number_format((float)$media,2,'.','');
+                
                 $this->setArray($rows,$media);
 
                 $dynaTable->createElement("tr",'class="dyCo" data-name="'
@@ -255,8 +280,8 @@ class Puntuaciones extends CI_Model {
         }
     }
     
-    public function printTopByNombre($usu) {
-        $query = $this->db->query('SELECT * FROM top WHERE agno = "'.$this->agno.'" order by puesto');
+    public function printTopByNombre($usu,$year) {
+        $query = $this->db->query('SELECT * FROM top WHERE agno = "'.$year.'" order by puesto');
         if ($query->num_rows() > 0) {
             $results = $query->result();
                 $puestos = array();
@@ -265,7 +290,7 @@ class Puntuaciones extends CI_Model {
                     $puestos[$a++] = $rows->idCancion;
                 }
         }
-        $query2 = $this->db->query('SELECT canciones.idCancion, canciones.idPais, canciones.nombre as nombreCan, paises.nombre as nombrePa, path, interprete,enlace,puesto FROM top_usuarios left join canciones on (top_usuarios.idCancion = canciones.idCancion) left join paises on(canciones.idPais = paises.idPais) where nombreUsuario="'.$usu.'" order by puesto');
+        $query2 = $this->db->query('SELECT canciones.idCancion, canciones.idPais, canciones.nombre as nombreCan, paises.nombre as nombrePa, path, interprete,enlace,puesto FROM top_usuarios left join canciones on (top_usuarios.idCancion = canciones.idCancion) left join paises on(canciones.idPais = paises.idPais) where nombreUsuario="'.$usu.'" and top_usuarios.agno = "'.$year.'" order by puesto');
         if ($query2->num_rows() > 0) {
             $results2 = $query2->result();
             $b = 1;

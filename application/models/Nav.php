@@ -16,7 +16,7 @@ class Nav extends CI_Model{
     private $loged;
     
     public function Nav() {
-        $this->date = date('Y-m-d h:i:s');
+        $this->date = date('Y-m-d H:i:s');
         $this->loged = $this->session->userdata('username');
     }
     
@@ -55,7 +55,13 @@ class Nav extends CI_Model{
                                 }
                                 ?>
                             <li class="modes" data-mode="glo"><a href="#">Globales</a></li>
-                            <li class="modes" data-mode="top"><a href="#">Top</a></li>
+                            <?php
+                            if (($this->date > config_item("topRes"))) { 
+                                ?>
+                                    <li class="modes" data-mode="top"><a href="#">Top</a></li>
+                                <?php
+                            }
+                            ?>   
                         </ul>
                     </div>
                 </div>
@@ -130,36 +136,39 @@ class Nav extends CI_Model{
                 <li class="active"><a href="index.php">Inicio<span class="sr-only">(current)</span></a></li>
                 <?php
                     if($this->loged != null) {
-                        if ($this->date < '2017-05-14 08:30:00') { 
-                            ?>
-                                <li role="presentation" class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                        Ediciones<span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <?php 
-                                            $this->printYearsList();
-                                        ?>
-                                    </ul>
-                                </li>
+                        if ($this->date > config_item("closeDate")) { 
+                            ?>  
+                                <li><a href="?y=2017&puntuar=true">Puntuar</a></li>    
+                                
                             <?php
                         }
-                        ?>
-                            <li><a href="?y=2017">Puntuaciones</a></li>
+                        ?>  
+                                <li role="presentation" class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                        Puntuaciones<span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="?y=2017">2017</a></li>
+                                        <li><a href="?y=2016">2016</a></li>
+                                    </ul>
+                                </li>
                             <li><a href="?top=true&year=2017">Top10</a></li>
                         <?php
                     }
-                
-                /*<li role="presentation" class="dropdown">
+                ?>
+                <?php
+                /*
+                <li role="presentation" class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                       2016 <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="?c=2016">Candidatos</a></li>
                     </ul>
-                </li>*/?>
-            </ul>
-        <?php
+                </li>*/
+                ?>
+            </ul><?php
+        
     }
     
     private function printYearsList() {

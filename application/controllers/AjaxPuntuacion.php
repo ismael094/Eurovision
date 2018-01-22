@@ -15,6 +15,7 @@ class AjaxPuntuacion extends CI_Controller {
     public function index() {
         $this->load->library('session');
         $data['paises'] = $this->Paises;
+        $data['top'] = $this->Top;
         $data['footerHtml'] = $this->load->view('footer', $data, true);
         $this->load->view('index', $data);
     }
@@ -28,8 +29,8 @@ class AjaxPuntuacion extends CI_Controller {
             $data['punt'] = new Puntuaciones($_POST['year']);
             $data['punt']->printPuntuacionesBy($_POST['mode'],$_POST['site']);
         } else {
-            $top = new Top($_POST['year']);
-            $top->showTopOfUsers();
+            $data['top'] = new Top($_POST['year']);
+            $data['top']->showTopOfUsers();
         }
     }
     public function printEnd() {

@@ -101,18 +101,68 @@ $('body').on('click', '.buttonSong2',function() {
 $('body').on('dblclick', '.dyCo',function() {
     var name = $(this).data('name');
     var href = $(this).data('enlace');
+    var id = $(this).data('id');
     $.ajax({
         type: 'POST',
         url: base_url+"index.php/Modals/printModal",
-        data: {'name': name,'href' : href},
+        data: {'name': name,'href' : href,'id' : id},
         success: function(data){
-            $("#myModal").html(data);
-            $("#myModal").modal('show');
+            if (isEmpty($("#myModal1"))) {
+                  $("#myModal").html(data);
+                  $("#myModal").modal('show');
+
+            } else {
+                
+                $("#myModal1").modal('toggle');
+                $("#myModal").html(data);
+                $("#myModal").modal('toggle');
+                 
+                
+            }
+            $('.modal-backdrop').removeClass("modal-backdrop");  
             
         }
     });
 });
 
+$('body').on('click', '.close',function() {
+    if ($(this).data('model') == "0") {
+        if (isEmpty($("#myModal1"))) {
+            $("#myModal").modal('hide');
+            $("#myModal").html('');
+        } else {
+            $("#myModal").modal('hide');
+            $("#myModal").html('');
+            $("#myModal1").modal('show');
+        }
+    } else {
+        $("#myModal1").modal('hide');
+        $("#myModal1").html('');
+    }
+    
+});
+            
+$('body').on('click', '#StopButton','.close',function() {
+    $("#myModal1").modal('hide');
+    $("#myModal1").html('');
+});
+
+$('body').on('click', '#StopButton1','.close1',function() {
+    if (isEmpty($("#myModal1"))) {
+        $("#myModal").modal('hide');
+        $("#myModal").html('');
+    } else {
+        $("#myModal").modal('hide');
+        $("#myModal").html('');
+        $("#myModal1").modal('show');
+    }
+    
+    
+});
+
+function isEmpty(el) {
+    return !$.trim(el.html());
+}
 $('body').on('click', '.dyCo',function() {
     var id = $(this).data('id');
     var name = $(this).data('name');
@@ -139,10 +189,15 @@ $('body').on('click', '.topButton',function() {
             $("#myModal1").html(data);
             $("#myModal1").modal('show');
             $('#my-table').dynatable();
+            $(".modal-body").css({
+                'overflow-x': 'auto'
+            });
             
         }
     });
 });
+
+
 
 $('body').on('click', '.topSave',function() {
     var num = $('#control').val();
@@ -162,9 +217,9 @@ $('body').on('click', '.topSave',function() {
         }
     });
 });
-$('body').on('click', '#StopButton',function() {
- $("#myModal").html('');
-});
+
+
+
 
 $('body').on('click', '.modes',function() {
     var year = $('#puntYear').val();
@@ -182,10 +237,11 @@ $('body').on('click', '.modes',function() {
 
 $('body').on('click', '#topUsuF',function() {
     var usu = $(this).data('usu');
+    var year = $(this).data('year');
     $.ajax({
         type: 'POST',
         url: base_url+"index.php/Modals/printTopByUsu",
-        data: {'usu': usu},
+        data: {'usu': usu,'year' : year},
         success: function(data){
             $("#myModal1").html(data);
             $("#myModal1").modal('show');
@@ -243,3 +299,4 @@ $('body').on('click', '.submitAddSong',function() {
     
     
 });
+

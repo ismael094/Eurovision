@@ -1,6 +1,7 @@
 <?php
     error_reporting(0);
     $user =$this->session->userdata('username');
+    $date = date('Y-m-d H:i:s');
     if ($_GET['top'] != null) {
         $body->createDiv(8,2,"well",false);
         $body->printH(2,"Top10 Eurovision 2017",'text-align: center');
@@ -19,7 +20,8 @@
         $paises->getPaises();
         $body->endDiv();
         $body->printFormAddSong();
-    } elseif (($_GET['y'] != null) && ($_GET['puntuar'] == 'true') && $user != null) {
+        //&& $date < config_item("closeDate")
+    } elseif (($_GET['y'] != null) && ($_GET['puntuar'] == 'true') && $user != null ) {
         $body->createDiv(2,1,"paisCon",false);
         $paises->getPaisesSongsByYear($_GET['y']);
         $body->endDiv();
@@ -28,9 +30,8 @@
     } elseif ($_GET['y'] != null && $user != null) {
         $body->createMainDiv();
         $body->verPuntuaciones();
-        ?>
-            <?=$footerHtml;?>
-        <?php
+        $body->endDiv();
+        
     } elseif ($_GET['c'] != null) {
         $body->createDiv(8,2,"well showCan",false);
         $songs->printSongs($_GET['c']);

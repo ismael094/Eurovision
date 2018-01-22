@@ -14,13 +14,16 @@
 error_reporting(0);
 class Body extends CI_Model{
     private $year;
+    private $date;
     
     function __construct($year="") {        
         parent::__construct();
         $this->year = $year;
+        $this->date = date('Y-m-d H:i:s');
     } 
     function Body($year="") {   
         $this->year = $year;
+        $this->date = date('Y-m-d H:i:s');
     } 
     public function createElement($element) {
         ?>
@@ -83,17 +86,15 @@ class Body extends CI_Model{
                     ?>
                 </div>
         <?php
-            $this->endDiv();
             $this->printModal("");
             $this->printModal("1");
             $this->createInput("hidden","",$_GET['y'],"puntYear");
-            $this->printScripts();
         
 
     }
     public function endPuntuaciones() {
         $this->createDiv(8,2,"well",false);
-        $this->printImage("resources/themes/default/img/wer.jpg");
+        $this->printImage("resources/themes/default/img/wer2.jpg");
         $this->endDiv();
         $this->createDiv(8,2,"well",false);
         $this->printH(2,"Has acabado de puntuar las canciones","text-align: center");
@@ -115,6 +116,7 @@ class Body extends CI_Model{
         ?>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
             <script src="<?php echo base_url().config_item('themePath').config_item('themeName');?>js/jquery.dynatable.js" ></script>
+            <script type="text/javascript" src="resources/themes/default/js/jquery.mobile-events.min.js"></script>
             <script>
                 $(document).ready(function () {    
                     $('#my-table').dynatable();
@@ -139,7 +141,7 @@ class Body extends CI_Model{
                    ?>
                 </div>
                 <div class="col-md-8 col-md-offset-2 well">
-                    <h2 style="text-align: center">Puntuaciones Eurovision Song Contest 2016</h2>
+                    <h2 style="text-align: center">Puntuaciones Eurovision Song Contest 2017</h2>
                 </div>
                 <div class="col-md-8 col-md-offset-2 well"  style="text-align: center">
                     <button class="btn btn-default buttonSong2" data-num="0">COMENZAR</button>
@@ -168,7 +170,7 @@ class Body extends CI_Model{
         $this->printText($array[3]);
         $this->endElement("textarea");
         $this->endDiv();
-        $this->createDivClass("col-md-2 col-md-offset-9", "",'style="margin-top:20px"');
+        $this->createDivClass("col-md-3 col-md-offset-9", "",'style="margin-top:20px"');
         ?>
             <button class="btn btn-default buttonSong" data-id="<?php echo $array[4];?>" data-num="<?php if ($array[5] > 0) {echo $array[5]-1;} else echo $array[5];?>">Anterior</button>
             <button class="btn btn-default buttonSong" data-id="<?php echo $array[4];?>" data-num="<?php echo $array[5]+1;?>">Siguiente</button>
@@ -289,7 +291,7 @@ class Body extends CI_Model{
                 </div>
         <?php
         
-        if ($this->date > '2016-05-14 08:30:00') {
+        if ($this->date > config_item("closeDate")) {
             $this->topButton($num-1,"disabled");
         } else {
             $this->topButton($num-1,"");

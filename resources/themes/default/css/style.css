@@ -18,8 +18,15 @@ body {
     width: 100px;
     height: 75px;
 }
-.perfilDiv {
-    
+.dyCo {
+    cursor: pointer;
+}
+.dyCo:hover {
+
+	background: rgba(0,0,0,0);
+	color: #3a7999;
+	box-shadow: inset 0 0 0 3px #3a7999;
+
 }
 #fixedImg{
     background: no-repeat;

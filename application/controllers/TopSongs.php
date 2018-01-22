@@ -24,7 +24,7 @@ class TopSongs extends CI_Controller {
     
     public function save(){
         $this->load->library('session');
-        $top = new Top;
+        $top = new Top($_POST['year']);
         $top->saveTop($_POST['puesto'], $_POST['idCancion'],$_POST['year']);
     }
     
