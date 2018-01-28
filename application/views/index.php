@@ -10,9 +10,8 @@
     
     <body>
         
-        <?=$cuerpo;?>
+       <?=$cuerpo;?>
          
         <?=$footerHtml;?>
-        
     </body>
 </html>

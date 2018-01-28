@@ -24,6 +24,13 @@ class Anadir extends CI_Controller {
     public function addSongByAdmin() {
         $song = new Songs;
         $song->setSong($_POST['idPais'],$_POST['agno'],$_POST['name'],$_POST['author'],$_POST['enlace'],$_POST['finalista']);
-        $song->saveSong();
+        $id = $song->saveSong();
+        $rt = new Body();
+        $rt->printFormAddSong($id);
+    }
+    
+    public function addComment() {
+        $song = new Comentarios();
+        $song->insert($_POST['mess']);
     }
 }

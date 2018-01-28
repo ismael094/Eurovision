@@ -119,13 +119,19 @@ class Top extends CI_Model {
 
 
     public function generatePosition() {
+        ?>
+            <div class="container card bg-faded" style="font-family: Montserrat-Bold;font-size:16px;"> 
+        <?php
         for ($z=1;$z<=10;$z++) {
             ?>
-               <div>
+               <div class="row hover" style="padding:30px;margin:5px;cursor: initial">
                     <?php $this->getSongByPuesto($z);?>
                 </div>
             <?php
         }
+        ?>
+            </div>
+        <?php
         
     }
     
@@ -211,19 +217,82 @@ class Top extends CI_Model {
     public function showTopOfUsers() {
         $this->getTopUsu();
         $body = new Body();
-        $body->createDivWithContent("col-md-6 well","","Usuario");
-        $body->endDiv();
-        $body->createDivWithContent("col-md-6 well","","Puntuación");
-        $body->endDiv();
+        ?>
+            <div class="container card bg-faded " style="padding-bottom: 20px">
+                <div class="row topPuntd bg-faded">
+                    <div class="col-md-6" style="font-size: 30px;text-align: center;height:50px;">
+                        Usuario
+                    </div>
+                    <div class="col-md-6" style="font-size: 30px;text-align: center;height:50px;">
+                        Puntuación
+                    </div>
+                </div>
+        <?php
+        $a = new Usuarios();
+        array_multisort($this->prueba, SORT_DESC, $this->prueba);
+        $kk = 1;
         foreach ($this->prueba as $key=>$value) {
+            $b = $a->getUser($key);
             $body->createDivClass("perfilDiv","topUsuF","data-usu='".$key."' data-year='".$this->agno."'");
-            $body->createDivClass("col-md-6 well text-justify container", "");
-            $body->printText($key);
+            $body->createDivClass("row hover", "");
+            $body->createDivClass("col-md-6 inline-block", "");
+            ?>
+                <div class="row justify-content-md-center" style="margin:20px;">
+                    <div class='circleP perComm'>
+                        <img src="<?php echo config_item('imgPer').$key."/"
+                                    . "".$b[0]->picture;?>" alt="img">
+                    </div>
+                    <div class="col-md-8" style="margin-top: 15px;">
+            <?php
+            if ($b[0]->nombre == "") {
+                $body->printText($b[0]->usuario);
+            } else {
+                $body->printText($b[0]->nombre);
+            }
             $body->endDiv();
-            $body->createDivWithContent("col-md-6 well","",$value);
+            $body->endDiv();
+            $body->endDiv();
+            ?>
+                <div class="col-md-6" style="text-align: center;font-size:24px;">
+                    <div style="margin-top:15px">
+                        <?php 
+                            echo $value." aciertos ";
+                            if ($kk == 1) {
+                                ?>
+                                    <i class="fa fa-trophy  fa-6"  style="color:#D9F028;font-size: 38px" aria-hidden="true"></i>
+                                    
+                                <?php
+                            } else if ($kk == 2) {
+                                ?>
+                                    <i class="fa fa-trophy  fa-5" aria-hidden="true"  style="color:#9B9895;font-size: 34px"></i>
+                                <?php
+                            } else if ($kk == 3) {
+                                ?>
+                                    <i class="fa fa-trophy  fa-4" aria-hidden="true" style="color:#FB7E32;font-size: 30px"></i>
+                                <?php
+                            }
+                            $kk++;
+                        ?> 
+                                    
+                    </div>
+                </div>
+            <?php
             $body->endDiv();
             $body->endDiv();
         }
+        $body->endDiv();
+        ?>
+                <script type="text/javascript">
+                    var $img = $(".perComm img"),
+                      width = $img.width(),
+                      height = $img.height(),
+                      tallAndNarrow = width / height < 1;
+                    if (tallAndNarrow) {
+                      //$img.addClass('tallAndNarrow');
+                    }
+                    $img.addClass('loaded');
+              </script>
+            <?php
     }
     
     

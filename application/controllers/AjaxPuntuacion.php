@@ -21,8 +21,8 @@ class AjaxPuntuacion extends CI_Controller {
     }
     
     public function setPunt() {
-        $data['punt'] = new Puntuaciones();
-        $data['punt']->savePunt($_POST['idSong'],$_POST['puntVoz'],$_POST['puntCan'],$_POST['comment']);
+        $data['punt'] = new Puntuaciones($_POST['year']);
+        $data['punt']->savePunt($_POST['idSong'],$_POST['puntVoz'],$_POST['puntCan'],$_POST['puntEsc'],$_POST['comment']);
     }
     public function printPunt() {
         if ($_POST['mode']!="top") {
@@ -36,5 +36,20 @@ class AjaxPuntuacion extends CI_Controller {
     public function printEnd() {
         $body = new Body($_POST['year']);
         $body->endPuntuaciones();
+    }
+    public function like() {
+        $body = new MisCanciones();
+        $body->insert($_POST['idSong']);
+    }
+    
+    public function nlike() {
+        $body = new MisCanciones();
+        $body->delete($_POST['idSong']);
+    }
+    
+    public function nlike2() {
+        $body = new MisCanciones();
+        $body->delete($_POST['idSong']);
+        $body->test();
     }
 }

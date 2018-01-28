@@ -15,13 +15,63 @@ class MainController extends CI_Controller {
             $data['body'] = $this->Body;
             $data['navi'] = $this->Nav;
             $data['table'] = $this->DynaTable;
+            $data['log'] = $this->Login;
+            $data['mySongs'] = $this->MisCanciones;
+            $data['log']->ok(true);
             if ($_POST['out'] != null) {
                 $this->session->sess_destroy();
                 header('location: index.php');
             }
-            if ($_POST['usuario'] != null) {
+            if ($_POST["loginOperation"] == "registro") {
+                $datos = array();
+                $datos["nombre"] = $_POST["nombre"];
+                $datos["usuario"] = $_POST["usuario"];
+                $datos["pass"] = $_POST["pass1"];
+                $datos["file"] = $_FILES['imgPer']['tmp_name'];
+                $datos["fileName"] = $_FILES['imgPer']['name'];
+                echo var_dump($datos);
+                $jkl = new Usuarios();
+                $jkl->setDataRegister($datos);
+                $tr = $jkl->register();
+                if ($tr == true) {
+                    $data['log']->setMessage("REGCOM");
+                } else if ($tr == "USUREP") {
+                    $data['log']->setMessage("USUREP");
+                }
+                
+            } else if ($_POST["loginOperation"] == "complete") {
+                $datos = array();
+                $datos["nombre"] = $_POST["nombre"];
+                $datos["pass"] = $_POST["pass1"];
+                $datos["file"] = $_FILES['imgPer']['tmp_name'];
+                $datos["fileName"] = $_FILES['imgPer']['name'];
+                $data['usu']->setDataComplete($datos);
+                $data['usu']->setUser($this->session->userdata('username'));
+                $data['usu']->complete(); 
+                
+            } else if ($_POST["loginOperation"] == "change") {
+                $datos = array();
+                $datos["nombre"] = $_POST["nombre"];
+                $datos["pass"] = $_POST["pass1"];
+                $datos["file"] = $_FILES['imgPer']['tmp_name'];
+                $datos["fileName"] = $_FILES['imgPer']['name'];
+                $data['usu']->setDataComplete($datos);
+                $data['usu']->setUser($this->session->userdata('username'));
+                $data['usu']->change(); 
+                
+            }
+            else if ($_POST['usuario'] != null) {
                 $data['usu']->login($_POST['usuario'],$_POST['pass']);
-                header('location: index.php');
+                $data['log']->ok($data['usu']->isSessionOk());
+                if ($data['usu']->isSessionOk()) {
+                    if ($this->session->userdata('state') == "CHANGE") {
+                        header('location: index.php?complete=true');   
+                    }  else {
+                        header('location: index.php');   
+                    }
+                    
+                }
+                
             }
             
             $data['navHtml'] = $this->load->view('nav',$data,true);

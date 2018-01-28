@@ -213,9 +213,10 @@ $config['controller_trigger'] = 'c';
 $config['function_trigger'] = 'm';
 $config['directory_trigger'] = 'd';
 $config['imageSetPunt'] = 'resources/themes/default/img/wer2.jpg';
-$config['navImage'] = 'resources/themes/default/img/EUROVISION.png';
+$config['navImage'] = 'resources/themes/default/img/EUROVISION.svg';
 $config['closeDate'] = '2017-05-13 20:00:00';
 $config['topRes'] = '2017-05-14 00:07:00';
+$config['imgPer'] = 'resources/themes/default/img/usuarios/';
 
 /*
 |--------------------------------------------------------------------------

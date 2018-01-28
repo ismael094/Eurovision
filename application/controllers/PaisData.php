@@ -25,14 +25,16 @@ class PaisData extends CI_Controller {
         $data['num'] = $_POST['num'];
         $data['songs'] = $this->Songs;
         $data['puntua'] = $this->Puntuaciones;
+        echo "<div class='container'>";
         $data['songs']->songDataByCountry($_POST['idPais'],$_POST['year']);
         $data['puntua']->getPunt($data['songs']->getSongId());
         $data['footerHtml'] = $this->load->view('footer', $data, true);
-        $array = array($data['puntua']->getPuntVoz(),$data['puntua']->getPuntCan(),
+        $array = array($data['puntua']->getPuntVoz(),$data['puntua']->getPuntCan(),$data['puntua']->getPuntEsc(),
             $_POST['year'],$data['puntua']->getPuntCom(),$data['songs']->getSongId(),
             $_POST['num']);
         $body = new Body();
         $body->printSetPuntuaciones($array);
+        echo "</div>";
     }
     public function printDataByNum($num) {
         $data['num'] = $_POST['num'];
@@ -42,6 +44,15 @@ class PaisData extends CI_Controller {
         $data['puntua']->getPunt($data['songs']->getSongId());
         $data['footerHtml'] = $this->load->view('footer', $data, true);
         $this->load->view('puntuacion', $data);
+    }
+    public function addCountry() {
+        $d = new Paises();
+        $j = $d->getPais($_POST['name']);
+        if ($j->num_rows() == 0) {
+            $d->createPais($_POST['name']);
+        }
+        $d->getPaises();
+        
     }
     
 }

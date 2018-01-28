@@ -49,10 +49,12 @@ class Songs extends CI_Model {
         $a = $this->checkIfExist();
         if ($a == false) {
             $query = $this->db->query('INSERT INTO canciones(nombre,interprete,enlace,idPais,estado,agno) VALUES ("'.$this->name.'", "'.$this->author.'", "'.$this->video.'", '.$this->idPais.', "'.$this->finalista.'", "'.$this->year.'")'); 
-            
+            return $this->db->insert_id();
         } else {
-            $query = $this->db->query('UPDATE canciones SET nombre = "'.$this->name.'", interprete = "'.$this->author.'",enlace = "'.$this->video.'" where idCancion = '.$a.''); 
+            //$query = $this->db->query('UPDATE canciones SET nombre = "'.$this->name.'", interprete = "'.$this->author.'",enlace = "'.$this->video.'" where idCancion = '.$a.''); 
+            return $a;
         }
+        
         
         
     }
@@ -69,6 +71,8 @@ class Songs extends CI_Model {
             
         }
     }
+    
+    
     
     private function getEmbedVideo($video) {
         $idVideo = substr($video, 32);
@@ -89,6 +93,22 @@ class Songs extends CI_Model {
             return $query->result();
         }
     }
+    
+    public function getSongsById($id){
+        $query = $this->db->query('SELECT * FROM canciones where idCancion='.$id.'');
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+    }
+    
+    public function getSongsRandom() {
+        $query = $this->db->query('SELECT * FROM canciones ORDER BY RAND() limit 10');
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
+    }
+    
+    
     public function printSongsByYear($year) {
         $this->year = $year;
         $results = $this->getSongsByYear();
@@ -132,6 +152,56 @@ class Songs extends CI_Model {
             }
         }
        
+    }
+    public function test() {
+        ?>
+            <div class="col-md-8 container card bg-faded" style="height:100%;margin-top:15px">
+                <div class="row justify-content-md-center">
+                <h3 class="col-md-6" style="text-align: center;padding: 20px">¡Antes de puntuar, escucha estas canciones!</h3>
+                </div>
+                <div class="row justify-content-md-center" style="overflow-y: auto;">
+                    <?php
+                        $q = $this->getSongsRandom(); 
+                        if ($q != null) {
+                            foreach ($q as $raw) {
+                                $idY = substr($raw->enlace, 30);
+                                ?>  
+                                    
+                                    <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12" style="margin: 10px;">
+                                        <div class="hovereffect">
+                                            <?php
+                                                if ($raw->agno >= 2016) {
+                                                    ?>
+                                                        <img class="img-fluid p" src="https://img.youtube.com/vi/<?php echo $idY;?>/maxresdefault.jpg" alt="">
+                                                    <?php
+                                                }else {
+                                                    ?>
+                                                        <img class="img-fluid p" src="resources/themes/default/img/jklio.png" alt="">
+                                                    <?php
+                                                }
+                                            ?>
+                                                        
+                                            <div class="overlay getid" >
+                                                <p class="justify-content-md-center" style="margin-top: -5px">
+                                                    <h2 style="margin-top: -45px"><?php echo $raw->nombre?></h2>
+                                                    <div class="float-center replay" 
+                                                          data-id="<?php echo $raw->idCancion;?>" 
+                                                          data-enlace="<?php echo $raw->enlace;?>" 
+                                                          data-name="<?php echo $raw->nombre.' - '.$raw->interprete;?>" style="text-align: center">
+                                                        <i class="fa fa-play" aria-hidden="true" style="font-size:35px"></i>
+                                                    </div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php
+                            }
+                        }
+                    ?>
+                </div>
+            </div>
+        <?php
     }
     
     public function getSongYear() {

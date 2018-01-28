@@ -79,12 +79,16 @@ class Body extends CI_Model{
         $nav = new Nav();
         $nav->printNavPunt();
         ?>
-                <div id="dyTable">
-                    <?php 
-                        $punt = new Puntuaciones($_GET['y']);
-                        $punt->printPuntuacionesBy('ind');
-                    ?>
+            <div class="row" style="margin-top:10px">
+                <div class="col card bg-faded">
+                    <div id="dyTable" style="padding-top:20px" class="test1">
+                        <?php 
+                            $punt = new Puntuaciones($_GET['y']);
+                            $punt->printPuntuacionesBy('ind','punt');
+                        ?>
+                    </div>
                 </div>
+            </div>
         <?php
             $this->printModal("");
             $this->printModal("1");
@@ -93,17 +97,25 @@ class Body extends CI_Model{
 
     }
     public function endPuntuaciones() {
-        $this->createDiv(8,2,"well",false);
-        $this->printImage("resources/themes/default/img/wer2.jpg");
-        $this->endDiv();
-        $this->createDiv(8,2,"well",false);
-        $this->printH(2,"Has acabado de puntuar las canciones","text-align: center");
-        $this->endDiv();
-        $this->createDivClass("col-md-8 col-md-offset-2 well","",'style="text-align: center"');
+        
         ?>
-            <button class="btn btn-default"><a href="index.php?y=<?php echo $this->year;?>">Ver mis puntuaciones</a></button>
+                    <div id="dataSong" class="container" style="margin-bottom:50px">
+                        <div class="row justify-content-md-center">
+                            <h2 style="text-align: center;margin-top: 50px;margin-bottom: 50px">Puntuaciones Eurovision Song Contest 2018</h2>
+                        </div>  
+                        <div class="row justify-content-md-center">
+                            <div class="col-md-10">
+                                <?php $this->printImage(config_item('imageSetPunt')); ?>
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center">
+                                <button style="text-align: center;margin: 0 auto;margin-top:50px;width: 190px;" class="btn btn-default buttonStyle col-md-4">
+                                    <a href="index.php?y=<?php echo $this->year;?>" style="text-decoration:none;color:white">Ver mis puntuaciones</a>
+                                </button>
+                        </div>
+                    </div>
+                
         <?php
-        $this->endDiv();
     }
     
     public function printH($h,$cont,$style) {
@@ -128,23 +140,30 @@ class Body extends CI_Model{
     }
     public function printModal($num) {
         ?>
-            <div class="modal fade" id="myModal<?php echo $num;?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+            <div class="modal h-100" id="myModal<?php echo $num;?>" tabindex="-5" role="dialog" aria-labelledby="examplemyModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    </div>
+                </div>  
+            </div>
         <?php
     }
     
     public function printBeginSetPuntuaciones() {
         ?>
-            <div id="dataSong" class="col-md-8 well row">
-                <div class="col-md-8 col-md-offset-2 well">
-                   <?php
-                        $this->printImage(config_item('imageSetPunt'));
-                   ?>
-                </div>
-                <div class="col-md-8 col-md-offset-2 well">
-                    <h2 style="text-align: center">Puntuaciones Eurovision Song Contest 2017</h2>
-                </div>
-                <div class="col-md-8 col-md-offset-2 well"  style="text-align: center">
-                    <button class="btn btn-default buttonSong2" data-num="0">COMENZAR</button>
+            <div class="container" style="margin-top:15px;margin-bottom: 15px;">
+                <div class="row">
+                    <div class="paisCon col-md-3 ">
+                        <?php $j = new Paises(); $j->getPaisesSongsByYear(2017);?>
+                    </div>
+                    <div id="dataSong" class="col col-md-9 card bg-faded row" style="margin:0px">
+                            <h2 style="text-align: center;margin-top: 50px;margin-bottom: 50px">Puntuaciones Eurovision Song Contest 2018</h2>
+                            <?php $this->printImage(config_item('imageSetPunt')); ?>
+                            <button style="text-align: center;margin: 0 auto;margin-top:50px;margin-bottom:20px;width: 150px;" class="btn btn-default buttonSong2 buttonStyle" data-num="0">COMENZAR</button>
+                        
+                            
+                        
+                    </div>
                 </div>
             </div>
         <?php
@@ -152,64 +171,113 @@ class Body extends CI_Model{
     
     public function printSetPuntuaciones($array) {
         $this->printSetPuntHead();
-        $this->createElement('tr class="aa"');
+        $this->createElement('tr class="aa" style="background-color:#aadca3"');
         $this->createElement('td');
-        $this->createInput("number", "form-control", $array[0], "puntVoz");
+        $this->createDivClass("wrap-input100", "", '');
+        $this->createInput("number", "form-control input100", $array[0], "puntVoz");
+        $this->createElement('span class="focus-input100"');
+        $this->endElement("span");
+        ?>
+            <span class="symbol-input100">
+                <i class="fa fa-microphone" aria-hidden="true"></i>
+            </span>
+            <?php
+        $this->endDiv(); 
+        $this->endElement("span");
         $this->endElement("td");
         $this->createElement('td');
-        $this->createInput("number", "form-control", $array[1], "puntCan");
-        $this->createInput("hidden", "form-control", $array[2], "year");
+        $this->createDivClass("wrap-input100", "", '');
+        $this->createInput("number", "form-control input100", $array[1], "puntCan");
+        $this->createElement('span class="focus-input100"');
+        $this->endElement("span");
+        ?>
+            <span class="symbol-input100">
+                <i class="fa fa-music" aria-hidden="true"></i>
+            </span>
+            <?php
+        $this->endDiv(); 
+        $this->createInput("hidden", "form-control", $array[3], "year");
+        $this->endElement("td");
+        $this->createElement('td');
+        $this->createDivClass("wrap-input100", "", '');
+        $this->createInput("number", "form-control input100", $array[2], "puntEsc");
+        $this->createElement('span class="focus-input100"');
+        $this->endElement("span");
+        ?>
+            <span class="symbol-input100">
+                <i class="fa fa-video-camera" aria-hidden="true"></i>
+            </span>
+            <?php
+        $this->endDiv();    
+        $this->endElement("td");
+        $this->createElement('td style="text-align:center"');
+        $a = new MisCanciones();
+        ?>
+            <i  class="fa fa-6 fa-thumbs-up <?php if ($a->select($array[5])) { echo "nlike";} else {echo "like";} ?>" data-id="<?php echo $array[5];?>" aria-hidden="true" style="font-size: 30px;margin-top:7px"></i>
+            <?php   
         $this->endElement("td");
         $this->endElement("tr");
         $this->endElement("table");
         $this->endElement("form");
         $this->endDiv();
-        $this->createDivClass("col-md-12", "",'style="margin-top:20px"');
+        $this->endDiv();
+        $this->createDivClass("row justify-content-md-center", "", 'style="margin-top:0px"');
+        $this->createDivClass("col-md-9", "",'');
         $this->printH(5, "Comentario: ", "");
-        $this->createElement('textarea rows="10" name="comment" id="comment"');
-        $this->printText($array[3]);
+        $this->createElement('textarea rows="5" name="comment" id="comment"');
+        $this->printText($array[4]);
         $this->endElement("textarea");
         $this->endDiv();
-        $this->createDivClass("col-md-3 col-md-offset-9", "",'style="margin-top:20px"');
+        $this->endDiv();
+        $this->createDivClass("row justify-content-md-center", "", 'style="margin-top:0px"');
+        $this->createDivClass("col-md-8", "",'style="margin-top:20px"');
         ?>
-            <button class="btn btn-default buttonSong" data-id="<?php echo $array[4];?>" data-num="<?php if ($array[5] > 0) {echo $array[5]-1;} else echo $array[5];?>">Anterior</button>
-            <button class="btn btn-default buttonSong" data-id="<?php echo $array[4];?>" data-num="<?php echo $array[5]+1;?>">Siguiente</button>
+            <div class="row justify-content-md-center">
+                <button class="btn btn-default buttonSong buttonStyle col-md-3" data-id="<?php echo $array[5];?>" data-num="<?php if ($array[6] > 0) {echo $array[5]-1;} else echo $array[5];?>">Anterior</button>
+                <button class="btn btn-default buttonSong buttonStyle col-md-3" data-id="<?php echo $array[5];?>" data-num="<?php echo $array[6]+1;?>">Siguiente</button>
+            </div>
         <?php
+        $this->endDiv();
+        $this->endDiv();
         $this->endDiv();
     }
     
     public function printSetPuntHead() {
-        $this->createDivClass("col-md-4", "",'style="margin-bottom:10px"');
+        $this->createDivClass("row justify-content-md-center", "", 'style="margin-top:30px"');
+        $this->createDivClass("col-md-9", "",'style="margin-bottom:10px"');
         $this->createElement("form");
-        $this->createElement('table class="table table-bordered puntajes"');
-        $this->createElement('tr');
-        $this->createElement('th colspan="2" style="text-align: center"');
-        $this->printText("Puntuaciones");
-        $this->endElement("th");
-        $this->endElement("tr");
-        $this->createElement('tr');
-        $this->createElement('th style="text-align: center"');
+        $this->createElement('table class="table puntajes"');
+        
+        $this->createElement('tr class="thead-default" style=""');
+        $this->createElement('th style="text-align: center;background-color:#57b846"');
         $this->printText("Voz");
         $this->endElement("th");
-        $this->createElement('th style="text-align: center"');
+        $this->createElement('th style="text-align: center;background-color:#57b846"');
         $this->printText("Canción");
+        $this->endElement("th");
+        $this->createElement('th style="text-align: center;background-color:#57b846"');
+        $this->printText("Puesta en escena");
+        $this->endElement("th");
+        $this->endElement("th");
+        $this->createElement('th style="text-align: center;background-color:#57b846"');
+        $this->printText("");
         $this->endElement("th");
         $this->endElement("tr");
     }
     
     public function printImage($url,$class="") {
         ?>
-            <img src="<?php echo $url;?>" class="img-responsive <?php echo $class;?>"/>
+            <img src="<?php echo $url;?>" class="img-fluid col <?php echo $class;?>"/>
         <?php
     }
     
     public function songPuntStructure($nombre,$interprete,$enlace) {
         ?>
-            <div class="col-md-12  col-xs-12">
-                <h3><?php echo $nombre;?> - <?php echo $interprete;?></h3>
+            <div class="row justify-content-md-center">
+                <h2 style="margin:20px"><?php echo $nombre;?> - <?php echo $interprete;?></h2>
             </div>
-            <div class="col-md-8">
-                <iframe class="col-md-12" height="315" src="<?php echo $enlace;?>"frameborder="0" allowfullscreen>'
+            <div class="row justify-content-md-center">
+                <iframe class="col-md-9" height="250" src="<?php echo $enlace;?>"frameborder="0" allowfullscreen>'
                 </iframe>
             </div>
         <?php
@@ -235,25 +303,70 @@ class Body extends CI_Model{
     
     public function printFormAddSong() {
         ?>
-            <div id="dataSongssss" class="col-md-8 well row">
-                <?php 
-                    $this->createDiv(8,2,"well",false);
-                    $this->formAddSongInput("text","Nombre","addSongName");
-                    $this->formAddSongInput("text","Intérprete","addSongAuthor");
-                    $this->formAddSongInput("number","Año","addSongAgno");
-                    $this->formAddSongInput("text","Enlace vídeo","addSongEnlace");
-                ?>
-                    <div class="checkbox">
-                        <label>
-                          <input type="checkbox" id="submitAddFinal"> Finalista directa
-                        </label>
+            <link rel="stylesheet" type="text/css" href="resources/themes/default/css/d.css">
+            <div class="col-md-12 card bg-faded" id="dataSongssss">
+                <div class="limiter">
+                <div class="container-login100">
+
+                    <div class="wrap-login100" style="margin:0 auto">
+                        <span class="login100-form-title" style="margin-top:-100px;font-size: 40px">
+                            Añadir canciones
+                        </span>
+                        
+                        <div class="needed login100-form validate-form"   style="margin:0 auto">  
+                        <span class="login100-form-title">
+                                    Nueva canción
+                            </span>
+
+                            <div class="wrap-input100 validate-input" data-validate = "Yes sir I can">
+                                <input class="input100" type="text" id="addSongName" placeholder="Nombre de la canción">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            
+                            <div class="wrap-input100 validate-input" data-validate = "Ejemplo: Ed Sheeran">
+                                <input class="input100" type="text" id="addSongAuthor" placeholder="Interprete">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                </span>
+                            </div>
+
+                            <div class="wrap-input100 validate-input" data-validate = "Año de la canción">
+                                <input class="input100" type="number" id="addSongAgno" placeholder="Año">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            
+                            <div class="wrap-input100 validate-input" data-validate = "Enlace vídeo youtube">
+                                <input class="input100" type="text" id="addSongEnlace" placeholder="Enlace">
+                                <span class="focus-input100"></span>
+                                <span class="symbol-input100">
+                                    <i class="fa fa-lock" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            
+                            <div class="wrap-input100 validate-input" data-validate = "Enlace vídeo youtube">
+                                <input type="checkbox" id="submitAddFinal" placeholder="Finalista directa"> Finalista directa
+                            </div>
+
+                            <div class="container-login100-form-btn">
+                                <button class="login100-form-btn submitAddSong">
+                                    Añadir
+                                </button>
+                            </div>
+                            <input type="hidden" value="" id="addSongNum"/>
+                        
+                        </div>
                     </div>
-                    <input type="hidden" class="form-control" id="addSongNum" value="">
-                    <button class="btn btn-default  submitAddSong">Añadir</button>
                 </div>
             </div>
             <div id="pruebaaa" class="col-md-8 well row"></div>
-            
+            </div>
         <?php
 
     }
@@ -269,35 +382,33 @@ class Body extends CI_Model{
     
     public function topStructure($num,$nombre,$interprete,$nombrePa,$has) {
         ?>
-            <div class="row well">
-                <div class="col-md-2">
-                    <span>Puesto <?php echo $num;?></span>
+                    <div class="col-md-2">
+                        <span><?php echo $num;?>º Puesto</span>
+                        <?php
+                            if ($has) {
+                                ?>
+                                    <input type="hidden" id="<?php echo $num-1;?>" />
+                                <?php
+                            }
+                        ?>
+                    </div>
+                    <div class="col-md-2">
+                        <span><?php echo $nombre;?></span>    
+                    </div>
+                    <div class="col-md-2">
+                        <span><?php echo $interprete;?></span>    
+                    </div>
+                    <div class="col-md-3">
+                        <span><?php echo $nombrePa;?></span>    
+                    </div>
+                
                     <?php
-                        if ($has) {
-                            ?>
-                                <input type="hidden" id="<?php echo $num-1;?>" />
-                            <?php
+                        if ($this->date > config_item("closeDate")) {
+                            $this->topButton($num-1,"disabled");
+                        } else {
+                            $this->topButton($num-1,"");
                         }
                     ?>
-                </div>
-                <div class="col-md-2">
-                    <span><?php echo $nombre;?></span>    
-                </div>
-                <div class="col-md-2">
-                    <span><?php echo $interprete;?></span>    
-                </div>
-                <div class="col-md-3">
-                    <span><?php echo $nombrePa;?></span>    
-                </div>
-        <?php
-        
-        if ($this->date > config_item("closeDate")) {
-            $this->topButton($num-1,"disabled");
-        } else {
-            $this->topButton($num-1,"");
-        }
-        ?>
-            </div>
         <?php 
     }
     
